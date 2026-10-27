@@ -9,7 +9,6 @@ import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
 
-import android.bluetooth.BluetoothAdapter;
 import android.os.Handler;
 import android.util.Log;
 
@@ -49,17 +48,11 @@ public class SlaveSocket {
 
         handler.post(new Runnable() {
             public void run() {
-                Log.d("SlaveSocket", "android.os.Build.MODEL " + android.os.Build.MODEL + " android.os.Build.PRODUCT: " + android.os.Build.PRODUCT);
-                BluetoothAdapter bluetooth = BluetoothAdapter.getDefaultAdapter();
-                if (bluetooth != null) {
-                    String name = bluetooth.getName();
-                    if (name != null) {
-                        deviceName = name;
-                    } else if (android.os.Build.MODEL != null) {
-                        deviceName = android.os.Build.MODEL;
-                    }
-                    Log.d("SlaveSocket", "btname: " + deviceName);
+                // the Bluetooth name needs a runtime permission since Android 12; the model is enough
+                if (android.os.Build.MODEL != null) {
+                    deviceName = android.os.Build.MODEL;
                 }
+                Log.d("SlaveSocket", "device name: " + deviceName);
             }
         });
 

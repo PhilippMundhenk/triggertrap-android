@@ -263,6 +263,7 @@ public class SunriseSunsetFragment extends TriggertrapFragment implements
                 android.Manifest.permission.ACCESS_FINE_LOCATION) == android.content.pm.PackageManager.PERMISSION_GRANTED;
     }
 
+    @android.annotation.SuppressLint("MissingPermission") // checked by hasLocationPermission() above
     private void loadUi() {
         if (!hasLocationPermission()) {
             mLocationTextView.setText(getString(R.string.permission_location_needed));

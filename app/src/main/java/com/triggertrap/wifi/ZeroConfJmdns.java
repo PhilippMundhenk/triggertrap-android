@@ -13,7 +13,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.bluetooth.BluetoothAdapter;
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.text.format.Formatter;
@@ -142,11 +141,14 @@ public class ZeroConfJmdns implements IZeroConf, MasterServer.ServerConnectionLi
 
     private void setupServer() throws Exception {
 
-        BluetoothAdapter bluetooth = BluetoothAdapter.getDefaultAdapter();
-        serverName = bluetooth.getName();
-        // Occasionally bluetooth name might return null, if so just give it a
-        // generic name;
-        if (serverName == null) {
+        // the device name as set by the user (Settings, About phone), the model as fallback;
+        // the Bluetooth name of the original needs a runtime permission since Android 12
+        serverName = android.provider.Settings.Global.getString(mParentService.getContentResolver(),
+                android.provider.Settings.Global.DEVICE_NAME);
+        if (serverName == null || serverName.isEmpty()) {
+            serverName = android.os.Build.MODEL;
+        }
+        if (serverName == null || serverName.isEmpty()) {
             serverName = TT_SERVER_NAME;
         }
         portNumber = masterServer.createServer();

@@ -353,8 +353,8 @@ public class MainActivity extends AppCompatActivity implements PulseSequenceList
         Log.d(TAG,
                 "Stopping Activity, isChangingConfigurations: "
                         + isChangingConfigurations());
-        // Make sure we reset the intent data
-        setIntent(new Intent());
+        // Make sure the notification extra is not applied again when relaunched from history
+        getIntent().removeExtra(FRAGMENT_TAG);
 
         if (mService != null) {
             // Keep the service alive while we are just rotating.

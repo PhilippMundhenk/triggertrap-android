@@ -1,5 +1,6 @@
 package com.triggertrap;
 
+import com.triggertrap.R;
 import com.triggertrap.fragments.preference.SettingsFragment;
 
 import android.content.Context;
@@ -366,15 +367,30 @@ public class TTApp {
         editor.commit();
     }
 
+    /**
+     * A list preference stored as a string; the default from preferences.xml when it is missing
+     * or not a number (a fresh install before the defaults were written, a cleared backup).
+     */
+    private static long parsePreference(SharedPreferences prefs, String key, long fallback) {
+        String value = prefs.getString(key, null);
+        if (value == null || value.isEmpty()) {
+            return fallback;
+        }
+        try {
+            return Long.parseLong(value.trim());
+        } catch (NumberFormatException e) {
+            return fallback;
+        }
+    }
+
     public long getBeepLength() {
         // Get the Beep Length from the DEFAULT share prefs made with the
         // preferences.xml
         if (mBeepLength == UNINTIALISED) {
             SharedPreferences sharedPref = PreferenceManager
                     .getDefaultSharedPreferences(mAppContext);
-            String pulseLengthStr = sharedPref.getString(
-                    SettingsFragment.PULSE_LENGTH_SETTING, "");
-            mBeepLength = Long.parseLong(pulseLengthStr);
+            mBeepLength = parsePreference(sharedPref, SettingsFragment.PULSE_LENGTH_SETTING,
+                    mAppContext.getResources().getInteger(R.integer.default_pulse_length));
         }
         return mBeepLength;
     }
@@ -450,9 +466,7 @@ public class TTApp {
         if (mSensorResetDelay == UNINTIALISED) {
             SharedPreferences sharedPref = PreferenceManager
                     .getDefaultSharedPreferences(mAppContext);
-            String resetDelay = sharedPref.getString(
-                    SettingsFragment.SENSOR_RESET_DELAY_SETTING, "");
-            mSensorResetDelay = Integer.parseInt(resetDelay);
+            mSensorResetDelay = (int) parsePreference(sharedPref, SettingsFragment.SENSOR_RESET_DELAY_SETTING, 1000);
         }
         return mSensorResetDelay;
     }
@@ -467,9 +481,7 @@ public class TTApp {
         if (mSensorDelay == UNINTIALISED) {
             SharedPreferences sharedPref = PreferenceManager
                     .getDefaultSharedPreferences(mAppContext);
-            String resetDelay = sharedPref.getString(
-                    SettingsFragment.SENSOR_DELAY_SETTING, "");
-            mSensorDelay = Integer.parseInt(resetDelay);
+            mSensorDelay = (int) parsePreference(sharedPref, SettingsFragment.SENSOR_DELAY_SETTING, 0);
         }
         return mSensorDelay;
     }
@@ -786,9 +798,7 @@ public class TTApp {
         if (mDistanceLapseUnit == UNINTIALISED) {
             SharedPreferences sharedPref = PreferenceManager
                     .getDefaultSharedPreferences(mAppContext);
-            String resetDelay = sharedPref.getString(
-                    SettingsFragment.DISTANCE_UNIT_SETTING, "");
-            mDistanceLapseUnit = Integer.parseInt(resetDelay);
+            mDistanceLapseUnit = (int) parsePreference(sharedPref, SettingsFragment.DISTANCE_UNIT_SETTING, SettingsFragment.DistanceUnits.METERS_KILOMETERS);
         }
         return mDistanceLapseUnit;
     }
@@ -821,9 +831,7 @@ public class TTApp {
         if (mDistanceLapseSpeedUnit == UNINTIALISED) {
             SharedPreferences sharedPref = PreferenceManager
                     .getDefaultSharedPreferences(mAppContext);
-            String resetDelay = sharedPref.getString(
-                    SettingsFragment.DISTANCE_SPEED_SETTING, "");
-            mDistanceLapseSpeedUnit = Integer.parseInt(resetDelay);
+            mDistanceLapseSpeedUnit = (int) parsePreference(sharedPref, SettingsFragment.DISTANCE_SPEED_SETTING, SettingsFragment.DistanceSpeedUnit.KILOMETERS_PER_HOUR);
         }
         return mDistanceLapseSpeedUnit;
     }

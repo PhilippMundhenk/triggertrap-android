@@ -29,6 +29,7 @@ public class CircleTimerView extends View {
     private long mAccumulatedTime = 0;
     private boolean mPaused = false;
     private boolean mAnimate = false;
+    private static final long ANIMATION_FRAME_MS = 100;
     private static float mCircleXCenterLeftPadding = 0;
     private static float mStrokeSize = 4;
     private static float mProgressStrokeSize = 2;
@@ -212,7 +213,9 @@ public class CircleTimerView extends View {
             drawRedDiamond(canvas, redPercent, xCenter, yCenter, radius);
         }
         if (mAnimate) {
-            invalidate();
+            // The DeskClock original redrew on every frame; 10 frames a second is enough for a
+            // progress ring and keeps the main thread (and the battery) free.
+            postInvalidateDelayed(ANIMATION_FRAME_MS);
         }
     }
 

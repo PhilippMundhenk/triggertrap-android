@@ -216,17 +216,23 @@ public class MasterServer {
 
     public void close() {
         isListening = false;
+        // close() may be called before createServer() (master switched off without ever being on)
         try {
-
-            for (DisconnectListeningThread disconnectListeningThread : disconnectListenerThreads) {
-                disconnectListeningThread.stopListening();
+            if (disconnectListenerThreads != null) {
+                for (DisconnectListeningThread disconnectListeningThread : disconnectListenerThreads) {
+                    disconnectListeningThread.stopListening();
+                }
             }
-            for (Socket clientSocket : clientSockets) {
-                clientSocket.close();
+            if (clientSockets != null) {
+                for (Socket clientSocket : clientSockets) {
+                    clientSocket.close();
+                }
             }
-            serverSocket.close();
+            if (serverSocket != null) {
+                serverSocket.close();
+            }
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.w(TAG, "closing the master server", e);
         }
     }
 

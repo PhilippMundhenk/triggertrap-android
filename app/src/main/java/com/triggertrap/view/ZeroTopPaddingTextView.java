@@ -5,7 +5,7 @@ import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
-public class ZeroTopPaddingTextView extends TextView {
+public class ZeroTopPaddingTextView extends androidx.appcompat.widget.AppCompatTextView {
 
     private static final float NORMAL_FONT_PADDING_RATIO = 0.328f;
     // the bold fontface has less empty space on the top

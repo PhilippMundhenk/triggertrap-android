@@ -1,33 +1,71 @@
-# Triggertrap Read Me & Licence
+# Triggertrap for Android
 
-Triggertrap is an app that makes it easy for photographers to use their phone as a wired remote control. 
+Turn your phone into a wired camera remote again. Triggertrap Mobile was a small dongle that
+plugs into the headphone jack and converts an audio pulse into a shutter press on a camera
+cable. The company went out of business in 2017 and the app disappeared from the Play Store;
+the hardware still works. This is the original Android app, kept alive and updated to run on
+current Android versions (8.0 up to 16).
 
-The Triggertrap system consists of 3 parts: 
+> This is a community continuation of the open-sourced Triggertrap app, not a product of
+> Triggertrap Ltd, which no longer exists. The licence of the original code is kept as is
+> (see [LICENSE](LICENSE)).
 
-- An app for iOS or Android
-- A Mobile Dongle that turns an audio signal into a switch
-- A Camera Connection Cable for a specific camera. 
+**Works with:** a Triggertrap Mobile dongle (MD3 / MD3b or earlier) or any compatible
+audio-jack trigger, plus the camera cable for your camera. Developed and tested against a
+Samsung NX1000; the app contains the Samsung NX timing tweak of the original.
 
-Triggertrap is a commercial project that was conceived in 2010, launched in 2011, and ultimately went out of business in 2017. 
+## Modes
 
-# Credits
+| Group | Modes |
+|---|---|
+| Cable release | Simple cable release, quick release, press and hold (bulb), press and lock, timed release, self timer |
+| Timelapse | Timelapse, TimeWarp (eased interval), distance lapse (GPS), star trail, bramping (bulb ramping) |
+| Sound | Sound sensor (clap, whistle, tap) |
+| HDR | Long-exposure HDR, HDR timelapse |
+| Remote | Wi-Fi slave / master: one phone triggers others on the same network |
+| Calculators | Sunrise / sunset with civil twilight, ND filter |
 
-The original software for iOS was built by Matt Kane, and it was further developed by Ross Gibson and Valentin Kalchev.
+Every mode keeps running when you switch screens or leave the app: a notification shows what
+is running and has a Stop button.
 
-# Licence - Open source under the MIT licence. 
+## Getting started
 
-Copyright 2017 Haje Jan Kamps (http://haje.me / @Haje)
+1. Install the APK from the [releases page](https://github.com/PhilippMundhenk/triggertrap-android/releases)
+   (allow installs from unknown sources when asked).
+2. Plug the dongle into the headphone jack (or a USB-C to 3.5 mm adapter), the camera cable
+   into the dongle and the camera. Set the camera to manual focus, or half-press focus first.
+3. Turn the media volume all the way up. The app warns when it is not at maximum: the dongle
+   needs the full signal.
+4. Open the menu (swipe from the left or tap the menu icon), pick a mode, tap the big red
+   button.
+5. The first time a mode needs it, Android asks for the microphone (sound sensor), the
+   location (distance lapse, solar calculator) or notifications (running modes).
 
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+Which cable: *Menu, Cable Selector* shows the cable code for your camera.
 
-- This software may not be distributed under the "Triggertrap" trademark. 
+## Screenshots
 
-- This software must not be distributed in a way that makes it appear as if the software is licenced or endorsed by "Triggertrap". 
+| Modes menu | Cable release | Timelapse |
+|---|---|---|
+| ![modes menu](docs/screenshots/drawer.png) | ![cable release](docs/screenshots/cable-release.png) | ![timelapse](docs/screenshots/timelapse.png) |
 
-- Any references to "Triggertrap" or the Triggertrap logo must be removed from the software 
+| Sound sensor | Solar calculator | ND calculator |
+|---|---|---|
+| ![sound sensor](docs/screenshots/sound-sensor.png) | ![solar calculator](docs/screenshots/solar.png) | ![ND calculator](docs/screenshots/nd.png) |
 
-- It may be marketed as "Compatible with Triggertrap" or "Based on Triggertrap". 
+## Documentation
 
-- The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+* [docs/APP.md](docs/APP.md) — every mode, the settings, the dongle and cables, troubleshooting
+* [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md) — building, tests and coverage, CI, releases, known gaps
+* [docs/DESIGN.md](docs/DESIGN.md) — how the app works and what was changed in 2026, [docs/adr/](docs/adr/) — decisions
+* [docs/BRANDING.md](docs/BRANDING.md) — the look (kept from the original)
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+Status: 4.0.0 runs on Android 8 to 16 and is verified on an emulator; the first run with a
+real dongle and camera is [issue #8](https://github.com/PhilippMundhenk/triggertrap-android/issues/8).
+Questions and problems: [GitHub issues](https://github.com/PhilippMundhenk/triggertrap-android/issues).
+
+## Credits
+
+The original app was built by Triggertrap Ltd (Android by Neil Davies, Scott Mellors and
+others; iOS by Matt Kane, Ross Gibson and Valentin Kalchev) and released as open source by
+Haje Jan Kamps in 2017.

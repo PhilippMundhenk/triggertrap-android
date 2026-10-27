@@ -368,7 +368,7 @@
   <string name="yards">Yards</string>
   <string name="yes">Ja</string>
   <string name="you_can_access_each">Sie können jeden Modus von dem Menü auf der linken Seite des Bildschirms aus verwalten. Um es zu öffnen, wischen Sie entweder von der linken Seite aus über den Bildschirm oder drücken Sie auf den kleinen Menü-Knopf oben links.</string>
-  <string name="you_ve_installed_a_beta_version">Sie haben eine Beta-Version unserer Android-App installiert. Das ist ziemlich genial, denn somit sind Sie unter den 1% der sexiesten Menschen der Welt gelandet.</string>
+  <string name="you_ve_installed_a_beta_version" formatted="false">Sie haben eine Beta-Version unserer Android-App installiert. Das ist ziemlich genial, denn somit sind Sie unter den 1% der sexiesten Menschen der Welt gelandet.</string>
   <string name="zero_point_eight_seconds">0,08 Sekunden</string>
   <string name="zero_point_five_seconds">0,05 Sekunden</string>
   <string name="zero_point_four_seconds">0,04 Sekunden</string>

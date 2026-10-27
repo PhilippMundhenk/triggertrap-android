@@ -47,6 +47,14 @@ public class TriggertrapService extends Service implements OutputListener,
     public static final String ACTION_STOP = "com.triggertrap.action.STOP";
     public static final String NOTIFICATION_CHANNEL = "running";
     public static final int NOTIFICATION_ID = 1;
+    /**
+     * UI update interval of the running timers. The original ticked every 5 ms (200 updates a
+     * second) which kept the main thread permanently busy; 100 ms is plenty for a countdown
+     * display. The shutter timing itself comes from the audio output, not from these timers.
+     */
+    public static final int UI_TICK_MS = 100;
+    /** Notification text updates every NOTIFICATION_TICKS * UI_TICK_MS (about half a second). */
+    private static final int NOTIFICATION_TICKS = 5;
 
     // Binder given to clients
     private final IBinder mBinder = new TiggertrapServiceBinder();
@@ -488,9 +496,9 @@ public class TriggertrapService extends Service implements OutputListener,
         // Just shorten the length of the timer a little (100ms)to stop timer
         // overlaps
         // Should be ok as this is just UI feedback timing.
-        mCountDownTimer = new CountDownTimer(mTimeToNextExposure - 100, 5) {
+        mCountDownTimer = new CountDownTimer(mTimeToNextExposure - 100, UI_TICK_MS) {
 
-            private final int FIVE_TENTHS_INTERVAL = 9;
+            private final int FIVE_TENTHS_INTERVAL = NOTIFICATION_TICKS;
             private int intervalCount = 0;
 
             public void onTick(long millisUntilFinished) {
@@ -784,8 +792,8 @@ public class TriggertrapService extends Service implements OutputListener,
         if (mListener != null) {
             mListener.onServiceTimedStart(time);
         }
-        mCountDownTimer = new CountDownTimer(time, 5) {
-            private final int FIVE_TENTHS_INTERVAL = 9;
+        mCountDownTimer = new CountDownTimer(time, UI_TICK_MS) {
+            private final int FIVE_TENTHS_INTERVAL = NOTIFICATION_TICKS;
             private int intervalCount = 0;
 
             public void onTick(long millisUntilFinished) {
@@ -848,8 +856,8 @@ public class TriggertrapService extends Service implements OutputListener,
         if (mListener != null) {
             mListener.onServiceTimedStart(time);
         }
-        mCountDownTimer = new CountDownTimer(time, 5) {
-            private final int FIVE_TENTHS_INTERVAL = 9;
+        mCountDownTimer = new CountDownTimer(time, UI_TICK_MS) {
+            private final int FIVE_TENTHS_INTERVAL = NOTIFICATION_TICKS;
             private int intervalCount = 0;
 
             public void onTick(long millisUntilFinished) {
@@ -910,8 +918,8 @@ public class TriggertrapService extends Service implements OutputListener,
         if (mListener != null) {
             mListener.onServiceStopwatchStart();
         }
-        mStopwatchTimer = new StopwatchTimer(5) {
-            private final int FIVE_TENTHS_INTERVAL = 9;
+        mStopwatchTimer = new StopwatchTimer(UI_TICK_MS) {
+            private final int FIVE_TENTHS_INTERVAL = NOTIFICATION_TICKS;
             private int intervalCount = 0;
 
             @Override
@@ -953,7 +961,7 @@ public class TriggertrapService extends Service implements OutputListener,
         if (mListener != null) {
             mListener.onServicePressStart();
         }
-        mStopwatchTimer = new StopwatchTimer(5) {
+        mStopwatchTimer = new StopwatchTimer(UI_TICK_MS) {
             @Override
             public void onTick(long millisUntilFinished) {
                 if (mListener != null && !mIsRunningInForeground) {
@@ -989,7 +997,7 @@ public class TriggertrapService extends Service implements OutputListener,
         if (mListener != null) {
             mListener.onServicePressStart();
         }
-        mStopwatchTimer = new StopwatchTimer(5) {
+        mStopwatchTimer = new StopwatchTimer(UI_TICK_MS) {
             @Override
             public void onTick(long millisUntilFinished) {
                 if (mListener != null && !mIsRunningInForeground) {
@@ -1038,6 +1046,11 @@ public class TriggertrapService extends Service implements OutputListener,
     /** @return false when the microphone is not available (permission not granted). */
     public boolean startSoundSensor() {
         return mMicVolumeMonitor.start();
+    }
+
+    /** True while the microphone is open (the sound sensor screen is showing or the sensor is armed). */
+    public boolean isSoundSensorOpen() {
+        return mMicVolumeMonitor.isRecording();
     }
 
     public void stopSoundSensor() {

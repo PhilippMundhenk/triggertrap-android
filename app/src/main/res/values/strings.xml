@@ -310,7 +310,7 @@
     <string name="let_s_get_triggering_">Let’s get triggering!!</string>
     <string name="would_you_like_to_stop_this_running_">Would you like to stop this running?</string>
     <string name="this_is_a_beta_">This is a Beta!</string>
-    <string name="you_ve_installed_a_beta_version">You’ve installed a Beta version of our Android app. Which is pretty awesome, because it puts you in the 1% sexiest people in the world category.</string>
+    <string name="you_ve_installed_a_beta_version" formatted="false">You’ve installed a Beta version of our Android app. Which is pretty awesome, because it puts you in the 1% sexiest people in the world category.</string>
     <string name="of_course_given_that_this_is_a">Of course, given that this is a Beta, there may be the odd quirk here and there. If you’d like to help us make the Android app better, please report any bugs and make any suggestions you have on our dedicated Android forum (http://tri.gg/betaforum)\n</string>
     <string name="got_it_awesome_enough_babble_already_">Got it? Awesome. Enough babble already.</string>
 

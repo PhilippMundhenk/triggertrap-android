@@ -264,7 +264,7 @@
     <string name="let_s_get_triggering_">Attiviamoci!</string>
     <string name="would_you_like_to_stop_this_running_">Vuoi fermare questo processo?</string>
     <string name="this_is_a_beta_">Questa &#232; una versione Beta!</string>
-    <string name="you_ve_installed_a_beta_version">Hai installato una versione Beta della nostra app Android. Il che &#232; parecchio interessante, perch&#233; ti mette in quella categoria che comprende l\'1% delle persone pi&#249; sexy al mondo.</string>
+    <string name="you_ve_installed_a_beta_version" formatted="false">Hai installato una versione Beta della nostra app Android. Il che &#232; parecchio interessante, perch&#233; ti mette in quella categoria che comprende l\'1% delle persone pi&#249; sexy al mondo.</string>
     <string name="of_course_given_that_this_is_a">Naturalmente, dato che questa &#232; una beta, pu&#242; esserci qualche stranezza qua e l&#224;. Se vuoi aiutarci a migliorare l\'app Android, ti preghiamo di segnalare eventuali bug e inviare tutti i tuoi suggerimenti sul nostro forum Android dedicato (http://tri.gg/betaforum)</string>
     <string name="got_it_awesome_enough_babble_already_">Capito? Ottimo. Abbiamo gi&#224; fatto abbastanza chiacchiere.</string>
     <!--Volume warning toast messages-->
