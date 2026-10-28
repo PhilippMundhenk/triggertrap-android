@@ -11,6 +11,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import com.triggertrap.R;
+import com.triggertrap.TTApp;
 import com.triggertrap.view.CircleTimerView;
 import com.triggertrap.view.CountingTimerView;
 import com.triggertrap.widget.OngoingButton;
@@ -38,7 +39,7 @@ public class QuickReleaseFragment extends TriggertrapFragment {
     }
 
     public QuickReleaseFragment() {
-
+        mRunningAction = TTApp.OnGoingAction.QUICK_RELEASE;
     }
 
     @Override

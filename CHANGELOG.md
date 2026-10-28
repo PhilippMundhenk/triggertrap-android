@@ -36,6 +36,10 @@ dongle; the parts that depended on companies and services that no longer exist a
   timing, which comes from the audio clock).
 
 ### Fixed
+- Leaving the app while Quick Release was armed crashed it: the notification texts stopped
+  one entry short of that mode, and Press and Hold showed the Pebble text. Coming back to a
+  held Quick Release or Press and Hold button, the release was ignored and the mode never
+  ended. (#12)
 - Crash when a list preference (pulse length, sensor delays, units) was missing or empty;
   the default from the settings definition is used instead.
 - Crash when the Wi-Fi master was switched off without ever having been on

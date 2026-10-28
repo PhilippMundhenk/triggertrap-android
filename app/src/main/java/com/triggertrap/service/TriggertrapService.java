@@ -368,6 +368,14 @@ public class TriggertrapService extends Service implements OutputListener,
         } else if (tag.equals(TTApp.FragmentTags.WIFI_SLAVE)
                 && mOnGoingAction == TTApp.OnGoingAction.WI_FI_SLAVE) {
             isActive = true;
+        } else if (tag.equals(TTApp.FragmentTags.QUICK_RELEASE)
+                && mOnGoingAction == TTApp.OnGoingAction.QUICK_RELEASE) {
+            // missing in the original: coming back from the background the fragment was told
+            // the mode had stopped, the button release was ignored and the mode never ended
+            isActive = true;
+        } else if (tag.equals(TTApp.FragmentTags.PRESS_AND_HOLD)
+                && mOnGoingAction == TTApp.OnGoingAction.PRESS_AND_HOLD) {
+            isActive = true;
         }
 
         return isActive;
@@ -672,7 +680,10 @@ public class TriggertrapService extends Service implements OutputListener,
     private String getNotifcationText(int onGoingAction) {
         String[] notifcations = getResources().getStringArray(
                 R.array.tt_notifications);
-        String notifcationText = notifcations[onGoingAction];
+        // the array is indexed by TTApp.OnGoingAction; never crash the activity's onStop over it
+        String notifcationText = onGoingAction >= 0 && onGoingAction < notifcations.length
+                ? notifcations[onGoingAction]
+                : getString(R.string.notification_channel_running);
 
         if (mOnGoingAction == TTApp.OnGoingAction.DISTANCE_LAPSE) {
             int distanceToTrigger = (int) mTriggerDistance

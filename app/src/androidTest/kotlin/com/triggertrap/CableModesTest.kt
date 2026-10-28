@@ -1,6 +1,10 @@
 package com.triggertrap
 
 import android.Manifest
+import android.app.Notification
+import androidx.core.app.NotificationManagerCompat
+import androidx.lifecycle.Lifecycle
+import com.triggertrap.TestSupport.context
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
@@ -67,7 +71,18 @@ class CableModesTest {
             onView(withId(R.id.quickReleaseButton)).perform(pressDown())
             waitFor(what = "quick release armed") { action() == TTApp.OnGoingAction.QUICK_RELEASE }
             assertEquals(TriggertrapService.State.IN_PROGRESS, state())
-            Thread.sleep(400)
+            // leaving the app while armed: the notification names the mode (the original crashed
+            // here, its notification texts stopped one entry short of QUICK_RELEASE)
+            moveToState(Lifecycle.State.CREATED)
+            waitFor(what = "quick release notification") {
+                NotificationManagerCompat.from(context).activeNotifications.any {
+                    it.id == TriggertrapService.NOTIFICATION_ID &&
+                        it.notification.extras.getCharSequence(Notification.EXTRA_TEXT) == string(R.string.quick_release)
+                }
+            }
+            moveToState(Lifecycle.State.RESUMED)
+            waitForUi { onView(withId(R.id.quickReleaseButton)).check(matches(isDisplayed())) }
+            assertEquals(TTApp.OnGoingAction.QUICK_RELEASE, action())
             onView(withId(R.id.quickReleaseButton)).perform(release())
             waitFor(what = "quick release fired") { state() == TriggertrapService.State.IDLE }
             assertEquals(TTApp.OnGoingAction.NONE, action())

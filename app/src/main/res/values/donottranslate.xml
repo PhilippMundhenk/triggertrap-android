@@ -104,9 +104,10 @@
         <item>@string/le_hdr_timelapse</item>
         <item>@string/wifi_slave</item>
         <item>@string/wifi_master</item>
-        <item>@string/running_pebble</item>
+        <item>@string/press_and_hold</item>
         <item>@string/running_pebble</item>
         <item>@string/running_self_timer</item>
+        <item>@string/quick_release</item>
     </string-array>
     <string-array name="pref_shutter_setting_labels">
         <item>@string/flash_shutter</item>

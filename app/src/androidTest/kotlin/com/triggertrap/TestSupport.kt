@@ -107,9 +107,13 @@ object TestSupport {
             for (setting in listOf("animator_duration_scale", "transition_animation_scale", "window_animation_scale")) {
                 device.executeShellCommand("settings put global $setting 0")
             }
+            // no ANR / crash dialogs at all: on the CI emulator the Pixel Launcher hangs after boot
+            // and its dialog came back seconds after every "Wait", keeping the window focus
+            device.executeShellCommand("settings put global hide_error_dialogs 1")
             device.executeShellCommand("wm dismiss-keyguard")
             device.wakeUp()
-            for (label in listOf("Wait", "Close app", "OK", "Allow", "While using the app", "Got it")) {
+            // "Close app" before "Wait": the hung app is restarted instead of asked again
+            for (label in listOf("Close app", "Wait", "OK", "Allow", "While using the app", "Got it")) {
                 device.findObject(By.text(label))?.let { Log.i("UITest", "dismissing $label"); it.click() }
             }
             val focus = device.executeShellCommand("dumpsys window").lineSequence()

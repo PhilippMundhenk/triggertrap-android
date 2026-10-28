@@ -12,6 +12,8 @@ mkdir -p "$out"
 adb shell wm dismiss-keyguard || true
 adb shell input keyevent 82 || true
 adb shell input keyevent 3 || true
+# no ANR / crash dialogs: a hung Pixel Launcher otherwise keeps the window focus for the whole run
+adb shell settings put global hide_error_dialogs 1 || true
 adb logcat -c || true
 adb exec-out screencap -p > "$out/before.png" || true
 adb shell dumpsys window | grep -E "mCurrentFocus|mFocusedApp" > "$out/focus-before.txt" || true
