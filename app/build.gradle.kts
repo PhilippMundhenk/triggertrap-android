@@ -109,7 +109,7 @@ tasks.register<JacocoReport>("jacocoAndroidTestReport") {
 
 tasks.register<JacocoCoverageVerification>("jacocoAndroidTestCoverageVerification") {
     group = "verification"
-    description = "Fails when the instrumented tests cover less than 60 % of the app lines (measured 63.8 % on 2026-10-28, target 95 %: issue #9)"
+    description = "Fails when the instrumented tests cover less than 60 % of the app lines (measured 65.2 % on 2026-10-28, target 95 %: issue #9)"
     dependsOn("compileDebugJavaWithJavac"); mustRunAfter("connectedDebugAndroidTest", "jacocoAndroidTestReport")
     classDirectories.setFrom(coverageClassDirs)
     sourceDirectories.setFrom(coverageSources)

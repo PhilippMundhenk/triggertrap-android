@@ -32,8 +32,9 @@ is running and has a Stop button.
 
 1. Install the APK from the [releases page](https://github.com/PhilippMundhenk/triggertrap-android/releases)
    (allow installs from unknown sources when asked).
-2. Plug the dongle into the headphone jack (or a USB-C to 3.5 mm adapter), the camera cable
-   into the dongle and the camera. Set the camera to manual focus, or half-press focus first.
+2. Plug the dongle into the headphone jack (or a USB-C to 3.5 mm adapter; a Bluetooth
+   receiver works with limits, see [docs/APP.md](docs/APP.md)), the camera cable into the
+   dongle and the camera. Set the camera to manual focus, or half-press focus first.
 3. Turn the media volume all the way up. The app warns when it is not at maximum: the dongle
    needs the full signal.
 4. Open the menu (swipe from the left or tap the menu icon), pick a mode, tap the big red

@@ -110,5 +110,7 @@ class PulseWaveform(private val listener: Listener? = null) {
         const val NX_DELAY_SAMPLES = 44
         /** How many shorts of [buffer] the output writes per block (the first half: 2205 frames = 50 ms). */
         const val WRITE_SHORTS = SAMPLE_COUNT
+        /** Real time of one written block in ms. */
+        const val BLOCK_MS = WRITE_SHORTS / 2 * 1000L / SAMPLE_RATE
     }
 }

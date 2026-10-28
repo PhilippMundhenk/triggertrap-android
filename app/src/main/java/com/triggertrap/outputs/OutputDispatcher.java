@@ -44,6 +44,10 @@ public class OutputDispatcher implements PulseListener {
         mPulseHandler.close();
     }
 
+    public AudioBeeper getAudioBeeper() {
+        return mPulseHandler.getBeeper();
+    }
+
     public void setOutputListener(OutputListener listener) {
         mListener = listener;
     }

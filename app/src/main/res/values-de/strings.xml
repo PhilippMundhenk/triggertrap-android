@@ -331,6 +331,8 @@
   <!-- Pebble -->
   <string name="trigger">Auslöser</string>
   <string name="trigger_pulse_length">Trigger-Impulslänge</string>
+  <string name="keep_audio_stream_open">Audio-Stream offen halten</string>
+  <string name="keep_audio_stream_open_summary">Zwischen den Impulsen Stille abspielen, damit ein Bluetooth-Empfänger die Verbindung nicht abbaut. Bei Klinke oder USB-C-Adapter nicht nötig.</string>
 
   <!-- Remote trigger modes sub text -->
   <string name="trigger_remotely">Fernauslösung</string>

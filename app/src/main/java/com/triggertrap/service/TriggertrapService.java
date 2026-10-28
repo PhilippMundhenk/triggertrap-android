@@ -317,6 +317,10 @@ public class TriggertrapService extends Service implements OutputListener,
         mIsRunningInForeground = false;
     }
 
+    public OutputDispatcher getOutputDispatcher() {
+        return mOutputDispatcher;
+    }
+
     public int getState() {
         return mState;
     }

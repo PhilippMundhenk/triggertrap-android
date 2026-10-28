@@ -10,6 +10,11 @@
             android:key="pref_pulse_length_setting"
             android:summary="@string/set_the_trigger_pulse_length"
             android:title="@string/trigger_pulse_length" />
+        <SwitchPreferenceCompat
+            android:defaultValue="false"
+            android:key="pref_keep_audio_stream_open"
+            android:summary="@string/keep_audio_stream_open_summary"
+            android:title="@string/keep_audio_stream_open" />
 
     </PreferenceCategory>
     <PreferenceCategory

@@ -19,6 +19,8 @@ dongle; the parts that depended on companies and services that no longer exist a
 - GitHub Actions: tests, lint, APKs, emulator suite, release on `v*` tags; dependabot;
   secret scan. (#6)
 - Documentation: end-user README, docs/, policies, ADRs. (#7)
+- Setting *Keep audio stream open*: silence between pulses so a Bluetooth receiver keeps
+  the link up; notes on USB-C adapters and Bluetooth in docs/APP.md. (#11)
 
 ### Changed
 - Gradle 8.14 / AGP 8.7, AndroidX, compileSdk and targetSdk 35, minSdk 26 (Android 8.0). (#1)

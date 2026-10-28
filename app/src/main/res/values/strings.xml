@@ -227,6 +227,8 @@
     <string name="sensors">SENSORS</string>
     <string name="set_the_trigger_pulse_length">Set the Trigger Pulse length</string>
     <string name="trigger_pulse_length">Trigger Pulse length</string>
+    <string name="keep_audio_stream_open">Keep audio stream open</string>
+    <string name="keep_audio_stream_open_summary">Play silence between pulses so a Bluetooth receiver does not drop the link. Not needed with a headphone jack or a USB-C adapter.</string>
     <string name="set_sensor_delays">Set sensor delays</string>
     <string name="about">ABOUT</string>
     <string name="version">Version</string>

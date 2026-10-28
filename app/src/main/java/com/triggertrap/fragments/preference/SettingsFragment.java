@@ -15,6 +15,7 @@ import androidx.preference.PreferenceFragmentCompat;
 
 import com.triggertrap.R;
 import com.triggertrap.TTApp;
+import com.triggertrap.outputs.AudioBeeper;
 
 public class SettingsFragment extends PreferenceFragmentCompat implements OnSharedPreferenceChangeListener {
 
@@ -25,6 +26,8 @@ public class SettingsFragment extends PreferenceFragmentCompat implements OnShar
     public static final String SENSOR_RESET_DELAY_SETTING = "pref_sensor_reset_delay_setting";
     public static final String DISTANCE_SPEED_SETTING = "pref_distance_speed_setting";
     public static final String DISTANCE_UNIT_SETTING = "pref_distance_unit_setting";
+    /** Boolean; read by {@link com.triggertrap.outputs.AudioBeeper} itself. */
+    public static final String KEEP_AUDIO_STREAM_OPEN_SETTING = AudioBeeper.KEEP_STREAM_OPEN_SETTING;
 
     public static final String SETTINGS_UPDATE_EVENT = "distance_unit_update_event";
 
@@ -98,10 +101,11 @@ public class SettingsFragment extends PreferenceFragmentCompat implements OnShar
         if (key == null) {
             return;
         }
-        ListPreference pref = findPreference(key);
-        if (pref == null) {
-            return;
+        Preference changed = findPreference(key);
+        if (!(changed instanceof ListPreference)) {
+            return; // the switch keeps its own summary; AudioBeeper listens to the preference itself
         }
+        ListPreference pref = (ListPreference) changed;
         pref.setSummary(pref.getEntry());
         TTApp app = TTApp.getInstance(requireActivity());
         Intent intent = new Intent(SETTINGS_UPDATE_EVENT);

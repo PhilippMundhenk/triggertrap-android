@@ -31,7 +31,7 @@ emulator or device (API 26+) for the UI suite. Work is tracked in
 * `./gradlew :app:assembleRelease` — release APK; signed with `app/release.keystore` + the
   `KEYSTORE_PASSWORD` / `KEY_ALIAS` / `KEY_PASSWORD` environment when present, debug-signed otherwise.
 
-Measured on 2026-10-28: core 99.6 % lines (gate 95 %); app 63.8 % lines (gate 60 %, in
+Measured on 2026-10-28: core 99.6 % lines (gate 95 %); app 65.2 % lines (gate 60 %, in
 `app/build.gradle.kts`, `jacocoAndroidTestCoverageVerification`). The app gate is below the
 house target of 95 % on purpose: the module is the 2015 code base and is covered end to end
 through the UI only; [issue #9](https://github.com/PhilippMundhenk/triggertrap-android/issues/9)

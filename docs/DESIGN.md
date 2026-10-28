@@ -25,7 +25,9 @@ core (pure Kotlin): PulseSequences, CubicBezier, SunTimes, NdCalculator, TimeFor
 * The service plays the sequence through `AudioBeeper`: a writer thread fills stereo blocks
   from `core.PulseWaveform` and writes them to an `AudioTrack`. The waveform counts the pulse
   and the pause down in samples and calls back when they end; the service then plays the next
-  pair. Timing therefore comes from the audio clock, not from timers.
+  pair. Timing therefore comes from the audio clock, not from timers. Between pulses the
+  writer sleeps; with *Keep audio stream open* it writes blocks of silence instead, so a
+  Bluetooth link is never suspended (#11). `AudioBeeper` reads that preference itself.
 * The activity binds the service and sets itself as listener; while the activity is stopped
   the service runs in the foreground (notification with Stop) and updates the notification
   text instead of the UI.

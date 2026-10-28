@@ -1,12 +1,15 @@
 package com.triggertrap
 
 import android.Manifest
+import android.os.SystemClock
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu
 import androidx.test.espresso.Espresso.pressBack
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.swipeLeft
 import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.contrib.RecyclerViewActions
+import androidx.test.espresso.matcher.ViewMatchers.hasDescendant
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
@@ -16,11 +19,14 @@ import com.triggertrap.TestSupport.assertTitle
 import com.triggertrap.TestSupport.launch
 import com.triggertrap.TestSupport.context
 import com.triggertrap.TestSupport.openMode
+import com.triggertrap.TestSupport.requireService
+import com.triggertrap.TestSupport.waitFor
 import com.triggertrap.TestSupport.string
 import com.triggertrap.TestSupport.waitForUi
 import com.triggertrap.activities.MainActivity
 import org.junit.After
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -83,10 +89,41 @@ class NavigationTest {
                 onView(withText(title)).perform(click())
                 pressBack()
             }
+            scrollSettingsTo(R.string.version)
             onView(withText(R.string.version)).check(matches(isDisplayed()))
             pressBack()
             waitForUi { assertTitle(string(R.string.getting_started)) }
         }
+    }
+
+    /** The switch streams silence between pulses (for Bluetooth receivers) and stops when switched off again. */
+    @Test
+    fun keepAudioStreamOpenSettingStreamsSilenceBetweenPulses() {
+        launch().run {
+            waitForUi { assertTitle(string(R.string.getting_started)) }
+            val beeper = requireService().outputDispatcher.audioBeeper
+            assertFalse(beeper.isKeepingStreamOpen)
+            val idle = beeper.silenceBlocksWritten
+            openActionBarOverflowOrOptionsMenu(context)
+            onView(withText(R.string.action_settings)).perform(click())
+            waitForUi { scrollSettingsTo(R.string.keep_audio_stream_open) }
+            onView(withText(R.string.keep_audio_stream_open)).perform(click())
+            waitFor(what = "stream kept open") { beeper.isKeepingStreamOpen }
+            waitFor(what = "silence streamed") { beeper.silenceBlocksWritten > idle + 3 }
+            onView(withText(R.string.keep_audio_stream_open)).perform(click())
+            waitFor(what = "stream released") { !beeper.isKeepingStreamOpen }
+            SystemClock.sleep(200) // the block in flight
+            val after = beeper.silenceBlocksWritten
+            SystemClock.sleep(500)
+            assertEquals(after, beeper.silenceBlocksWritten)
+            pressBack()
+        }
+    }
+
+    /** The settings screen is a RecyclerView: bring the row with [title] into view. */
+    private fun scrollSettingsTo(title: Int) {
+        onView(withId(androidx.preference.R.id.recycler_view))
+            .perform(RecyclerViewActions.scrollTo<androidx.recyclerview.widget.RecyclerView.ViewHolder>(hasDescendant(withText(title))))
     }
 
     @Test

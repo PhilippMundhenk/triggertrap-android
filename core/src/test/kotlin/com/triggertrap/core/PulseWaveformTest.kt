@@ -97,4 +97,9 @@ class PulseWaveformTest {
         w.fillStereo()
         assertEquals(1, e.stops)
     }
+
+    @Test fun aWrittenBlockIs50ms() {
+        assertEquals(50L, PulseWaveform.BLOCK_MS)
+        assertEquals(2205, PulseWaveform.WRITE_SHORTS / 2) // stereo frames per block
+    }
 }

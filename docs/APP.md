@@ -13,6 +13,28 @@ channel has a short silence at the start of every 50 ms block, which Samsung NX 
 Settings, *Trigger pulse length*: how long the shutter contact is closed for a single shot.
 150 ms suits most cameras; raise it if the camera misses shots.
 
+## Phones without a headphone jack
+
+The app only plays sound, so anything that gives you a 3.5 mm stereo output works.
+
+**USB-C to 3.5 mm adapter (recommended).** Any active adapter with its own DAC, that is one
+that plays ordinary headphones on your phone. Wired, no delay, full signal. A passive adapter
+for phones with analogue audio over USB-C does nothing on most current phones.
+
+**Bluetooth receiver with a 3.5 mm output.** Works with limits:
+
+* It must be a stereo receiver. The two channels are mirror images of each other; a mono
+  receiver, or a "mix to mono" option, sums them to silence.
+* A2DP adds 100 to 300 ms of delay. Timelapse, star trail, bramping and HDR do not care
+  (every shot shifts by the same amount); quick release, sound sensor, distance lapse and the
+  Wi-Fi slave fire late.
+* 17 kHz sits at the edge of what SBC and AAC carry; aptX or LE Audio receivers do better.
+  If the camera does not fire, try a longer pulse length.
+* Bluetooth suspends the link after a moment of silence and needs time to wake up, which
+  clips the start of a pulse or swallows a short one. Switch on *Settings, Keep audio stream
+  open*: the app then plays silence between pulses and the link stays up. Leave it off with
+  a jack or a USB-C adapter (it costs a little battery).
+
 ## Modes
 
 **Cable release.** *Simple*: tap, one shot. *Quick release*: the shot fires when you let go
@@ -61,6 +83,8 @@ for the notification permission on first start for that.
 * The camera does not fire: volume at maximum? Cable fully plugged in? Camera in manual
   focus? Try a longer pulse length in the settings. Some phones apply an audio effect or
   "volume limiter" to the headphone output; disable it.
+* Over Bluetooth the first shot of a sequence is missed, or short pulses are missed:
+  switch on *Keep audio stream open* (see above).
 * Shots are missed in a fast timelapse: the interval must be longer than the pulse length
   (the screen shows a warning icon).
 * The solar calculator shows no location: location is off, or the permission was declined

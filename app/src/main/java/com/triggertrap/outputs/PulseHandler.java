@@ -77,6 +77,10 @@ public class PulseHandler implements AudioBeeperListener {
         mBeeper.stop();
     }
 
+    public AudioBeeper getBeeper() {
+        return mBeeper;
+    }
+
     public void close() {
         mBeeper.close();
     }

@@ -186,6 +186,8 @@
     <string name="sensors">SENSORI</string>
     <string name="set_the_trigger_pulse_length">Impostare la lunghezza di pressione del trigger</string>
     <string name="trigger_pulse_length">Lunghezza di pressione del trigger</string>
+    <string name="keep_audio_stream_open">Mantieni aperto il flusso audio</string>
+    <string name="keep_audio_stream_open_summary">Riproduce silenzio tra gli impulsi così un ricevitore Bluetooth non sospende il collegamento. Non serve con il jack o un adattatore USB-C.</string>
     <string name="set_sensor_delays">Impostare i ritardi del sensore</string>
     <string name="about">INFORMAZIONI</string>
     <string name="version">Versione</string>

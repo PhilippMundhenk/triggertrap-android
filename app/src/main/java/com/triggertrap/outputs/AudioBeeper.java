@@ -1,27 +1,48 @@
 package com.triggertrap.outputs;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.media.AudioAttributes;
 import android.media.AudioFormat;
 import android.media.AudioTrack;
 import android.util.Log;
 
+import androidx.preference.PreferenceManager;
+
 import com.triggertrap.core.PulseWaveform;
 
 /**
- * Plays the trigger signal through the headphone jack. The signal itself and the pulse /
+ * Plays the trigger signal through the audio output. The signal itself and the pulse /
  * pause timing come from {@link PulseWaveform}; this class owns the {@link AudioTrack} and
  * the writer thread.
+ *
+ * Between pulses the writer normally sleeps and the track starves. With the
+ * {@link #KEEP_STREAM_OPEN_SETTING} setting on it streams silence instead, so a Bluetooth
+ * receiver never suspends the link and does not clip the start of the next pulse.
  */
 public class AudioBeeper implements IBeeper, PulseWaveform.Listener {
 
     private static final String TAG = AudioBeeper.class.getSimpleName();
     public static final long FOREVER = PulseWaveform.FOREVER;
+    /** Settings key (default shared preferences): stream silence between pulses. */
+    public static final String KEEP_STREAM_OPEN_SETTING = "pref_keep_audio_stream_open";
+
+    private static final short[] SILENCE = new short[PulseWaveform.WRITE_SHORTS];
+    private static final long IDLE_SLEEP_MS = 10;
 
     private final PulseWaveform mWaveform = new PulseWaveform(this);
     private AudioTrack track;
     private volatile boolean writingSamples = true;
+    private volatile boolean keepStreamOpen = false;
+    private volatile long silenceBlocksWritten = 0;
     private final AudioBeeperListener mListener;
+    private final SharedPreferences mPrefs;
+    // SharedPreferences keeps its listeners weakly: this field keeps the listener alive
+    private final SharedPreferences.OnSharedPreferenceChangeListener mPrefsListener = (prefs, key) -> {
+        if (KEEP_STREAM_OPEN_SETTING.equals(key)) {
+            setKeepStreamOpen(prefs.getBoolean(KEEP_STREAM_OPEN_SETTING, false));
+        }
+    };
 
     public interface AudioBeeperListener {
         void onAudioPlayStart();
@@ -37,6 +58,14 @@ public class AudioBeeper implements IBeeper, PulseWaveform.Listener {
 
     public AudioBeeper(AudioBeeperListener listener, Context context) {
         mListener = listener;
+
+        if (context != null) {
+            mPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+            keepStreamOpen = mPrefs.getBoolean(KEEP_STREAM_OPEN_SETTING, false);
+            mPrefs.registerOnSharedPreferenceChangeListener(mPrefsListener);
+        } else {
+            mPrefs = null;
+        }
 
         int minSize = AudioTrack.getMinBufferSize(PulseWaveform.SAMPLE_RATE, AudioFormat.CHANNEL_OUT_STEREO,
                 AudioFormat.ENCODING_PCM_16BIT);
@@ -65,11 +94,17 @@ public class AudioBeeper implements IBeeper, PulseWaveform.Listener {
                 if (!mWaveform.getPaused() && track != null) {
                     mWaveform.fillStereo();
                     track.write(mWaveform.getBuffer(), 0, PulseWaveform.WRITE_SHORTS);
+                } else if (keepStreamOpen) {
+                    // idle, but the output must not sleep: a block of silence paces the loop
+                    if (track != null) {
+                        track.write(SILENCE, 0, PulseWaveform.WRITE_SHORTS);
+                    } else if (!sleep(PulseWaveform.BLOCK_MS)) {
+                        return;
+                    }
+                    silenceBlocksWritten++;
                 } else {
                     // nothing to play: do not spin
-                    try {
-                        Thread.sleep(10);
-                    } catch (InterruptedException e) {
+                    if (!sleep(IDLE_SLEEP_MS)) {
                         return;
                     }
                 }
@@ -81,6 +116,15 @@ public class AudioBeeper implements IBeeper, PulseWaveform.Listener {
         if (track != null) {
             track.setVolume(AudioTrack.getMaxVolume());
             track.play();
+        }
+    }
+
+    private static boolean sleep(long ms) {
+        try {
+            Thread.sleep(ms);
+            return true;
+        } catch (InterruptedException e) {
+            return false;
         }
     }
 
@@ -104,8 +148,25 @@ public class AudioBeeper implements IBeeper, PulseWaveform.Listener {
         mWaveform.stop();
     }
 
+    /** Stream silence between pulses (Bluetooth receivers) instead of letting the track starve. */
+    public void setKeepStreamOpen(boolean keepOpen) {
+        keepStreamOpen = keepOpen;
+    }
+
+    public boolean isKeepingStreamOpen() {
+        return keepStreamOpen;
+    }
+
+    /** Blocks of silence written so far while idle; grows only while the stream is kept open. */
+    public long getSilenceBlocksWritten() {
+        return silenceBlocksWritten;
+    }
+
     public void close() {
         writingSamples = false;
+        if (mPrefs != null) {
+            mPrefs.unregisterOnSharedPreferenceChangeListener(mPrefsListener);
+        }
         if (track != null) {
             try {
                 track.flush();
