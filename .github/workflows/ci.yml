@@ -90,23 +90,9 @@ jobs:
           profile: pixel_6
           disable-animations: true
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -no-snapshot-save
-          # dismiss the keyguard / any "System UI isn't responding" dialog: Espresso otherwise
-          # fails with RootViewWithoutFocusException before the first test runs
-          script: |
-            adb shell wm dismiss-keyguard || true
-            adb shell input keyevent 82 || true
-            adb shell input keyevent 3 || true
-            adb logcat -c || true
-            mkdir -p app/build/emulator-diagnostics
-            adb exec-out screencap -p > app/build/emulator-diagnostics/before.png || true
-            set +e
-            ./gradlew :app:connectedDebugAndroidTest :app:jacocoAndroidTestReport :app:jacocoAndroidTestCoverageVerification --no-daemon
-            rc=$?
-            set -e
-            adb exec-out screencap -p > app/build/emulator-diagnostics/after.png || true
-            adb shell dumpsys window | grep -E "mCurrentFocus|mFocusedApp" > app/build/emulator-diagnostics/focus.txt || true
-            adb logcat -d > app/build/emulator-diagnostics/logcat.txt || true
-            exit $rc
+          # the action runs every script line in its own shell: one script keeps the
+          # diagnostics after Gradle (screenshots, focus, logcat) in the artifact
+          script: sh .github/scripts/emulator-tests.sh
       - uses: actions/upload-artifact@v4
         if: always()
         with:
